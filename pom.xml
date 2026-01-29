@@ -12,14 +12,15 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.release>17</maven.compiler.release>
 
-		<!-- Versions -->
 		<cucumber.version>7.19.0</cucumber.version>
 		<selenium.version>4.25.0</selenium.version>
 		<webdrivermanager.version>5.7.0</webdrivermanager.version>
 		<extentreports.version>5.1.1</extentreports.version>
 		<extent.adapter.version>1.14.0</extent.adapter.version>
+		<slf4j.version>2.0.9</slf4j.version>
 	</properties>
 
+	<!-- ✅ ALL DEPENDENCIES HERE -->
 	<dependencies>
 
 		<!-- Cucumber -->
@@ -36,7 +37,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- JUnit 4 -->
+		<!-- JUnit -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -65,7 +66,7 @@
 			<version>${extentreports.version}</version>
 		</dependency>
 
-		<!-- Extent Reports Cucumber 7 Adapter -->
+		<!-- Extent Adapter -->
 		<dependency>
 			<groupId>tech.grasshopper</groupId>
 			<artifactId>extentreports-cucumber7-adapter</artifactId>
@@ -76,11 +77,20 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>2.0.9</version>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<!-- TestNG (if your project uses it) -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>7.9.0</version>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
 
+	<!-- ✅ BUILD PLUGINS ONLY -->
 	<build>
 		<plugins>
 
@@ -105,21 +115,6 @@
 					</includes>
 				</configuration>
 			</plugin>
-			<!-- TestNG -->
-			<dependency>
-				<groupId>org.testng</groupId>
-				<artifactId>testng</artifactId>
-				<version>7.9.0</version>
-				<scope>test</scope>
-			</dependency>
-
-			<!-- Log4j -->
-			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>1.2.17</version>
-			</dependency>
-
 
 		</plugins>
 	</build>
