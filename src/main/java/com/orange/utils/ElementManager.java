@@ -16,9 +16,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import org.testng.Assert;
-import org.testng.Reporter;
-
 /**
  * This class contains reusable web-element related methods
  */
@@ -43,8 +40,7 @@ public class ElementManager {
 			logger.info("Waiting for element: {}", byType);
 			return new WebDriverWait(driver, explicitTime).until(ExpectedConditions.visibilityOfElementLocated(byType));
 		} catch (Exception e) {
-			logger.error("Element not found: {}", byType, e);
-			catchException(byType, "Element", explicitTime);
+			logException(byType, "Element", explicitTime);
 			return null;
 		}
 	}
@@ -54,84 +50,92 @@ public class ElementManager {
 			return new WebDriverWait(driver, explicitTime)
 					.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(byType));
 		} catch (Exception e) {
-			logger.error("Elements not found: {}", byType, e);
-			catchException(byType, "Elements", explicitTime);
+			logException(byType, "Elements", explicitTime);
 			return null;
 		}
 	}
 
 	/* -------------------- CLICK & TYPE -------------------- */
 
-	public void click(By byType, Duration explicitTime) {
+	public boolean click(By byType, Duration explicitTime) {
 		WebElement element = getElement(byType, explicitTime);
-		element.click();
-		logger.info("Clicked on element: {}", byType);
+		if (element != null) {
+			element.click();
+			logger.info("Clicked on element: {}", byType);
+			return true;
+		}
+		return false;
 	}
 
-	public void sendKeys(By byType, String value, Duration explicitTime) {
+	public boolean sendKeys(By byType, String value, Duration explicitTime) {
 		WebElement element = getElement(byType, explicitTime);
-		element.clear();
-		element.sendKeys(value);
-		logger.info("Entered value '{}' in element {}", value, byType);
+		if (element != null) {
+			element.clear();
+			element.sendKeys(value);
+			logger.info("Entered value '{}' in element {}", value, byType);
+			return true;
+		}
+		return false;
 	}
 
 	/* -------------------- DROPDOWN -------------------- */
 
-	public void selectByVisibleText(By byType, String text, Duration explicitTime) {
+	public boolean selectByVisibleText(By byType, String text, Duration explicitTime) {
 		WebElement element = getElement(byType, explicitTime);
-		Select select = new Select(element);
-		select.selectByVisibleText(text);
-		logger.info("Selected '{}' from dropdown {}", text, byType);
+		if (element != null) {
+			new Select(element).selectByVisibleText(text);
+			logger.info("Selected '{}' from dropdown {}", text, byType);
+			return true;
+		}
+		return false;
 	}
 
 	/* -------------------- WAIT UTILITIES -------------------- */
 
-	public void waitForInvisibility(By byType, Duration explicitTime) {
+	public boolean waitForInvisibility(By byType, Duration explicitTime) {
 		try {
 			wait.until(ExpectedConditions.invisibilityOfElementLocated(byType));
 			logger.info("Element disappeared: {}", byType);
+			return true;
 		} catch (Exception e) {
-			logger.error("Progress bar timeout", e);
-			catchException(byType, "Progress Bar", explicitTime);
+			logException(byType, "Progress Bar", explicitTime);
+			return false;
 		}
 	}
 
 	/* -------------------- JAVASCRIPT -------------------- */
 
 	public void scrollIntoView(WebElement element) {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView(true);", element);
-		logger.info("Scrolled into view");
+		if (element != null) {
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+			logger.info("Scrolled into view");
+		}
 	}
 
 	public void jsClick(WebElement element) {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", element);
-		logger.info("Clicked using JavaScript");
+		if (element != null) {
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+			logger.info("Clicked using JavaScript");
+		}
 	}
 
 	/* -------------------- ACTIONS -------------------- */
 
-	public void elementDragAndDrop(WebDriver driver, WebElement sourceElement, int xAxis, int yAxis) {
-
-		actionBuilder = new Actions(driver);
-		actionBuilder.dragAndDropBy(sourceElement, xAxis, yAxis).perform();
-		logger.info("Drag and drop performed");
+	public boolean elementDragAndDrop(WebElement sourceElement, int xAxis, int yAxis) {
+		try {
+			actionBuilder.dragAndDropBy(sourceElement, xAxis, yAxis).perform();
+			logger.info("Drag and drop performed");
+			return true;
+		} catch (Exception e) {
+			logger.error("Drag and drop failed", e);
+			return false;
+		}
 	}
 
-	/* -------------------- EXCEPTION HANDLING -------------------- */
+	/* -------------------- LOGGING ONLY (NO ASSERTIONS) -------------------- */
 
-	private void catchException(By byType, String elementMSG, Duration explicitTime) {
-		String message = "TIMEOUT after " + explicitTime + " - " + byType;
-		Reporter.log(message, true);
+	private void logException(Object locator, String elementMSG, Duration explicitTime) {
+		String message = "TIMEOUT after " + explicitTime + " - " + elementMSG + " : " + locator;
 		logger.error(message);
-		Assert.fail(message);
-	}
-
-	private void catchException(WebElement element, String elementMSG, Duration explicitTime) {
-		String message = "TIMEOUT after " + explicitTime + " - " + element;
-		Reporter.log(message, true);
-		logger.error(message);
-		Assert.fail(message);
 	}
 }
