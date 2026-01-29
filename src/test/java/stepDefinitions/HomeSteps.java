@@ -1,9 +1,10 @@
 package stepDefinitions;
 
 import base.BaseTest;
+
 import pages.HomePage;
 import io.cucumber.java.en.*;
-import org.junit.Assert;
+import org.testng.Assert;
 
 public class HomeSteps extends BaseTest {
 

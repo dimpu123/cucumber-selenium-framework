@@ -11,39 +11,13 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.release>17</maven.compiler.release>
-
 		<cucumber.version>7.19.0</cucumber.version>
 		<selenium.version>4.25.0</selenium.version>
 		<webdrivermanager.version>5.7.0</webdrivermanager.version>
-		<extentreports.version>5.1.1</extentreports.version>
-		<extent.adapter.version>1.14.0</extent.adapter.version>
-		<slf4j.version>2.0.9</slf4j.version>
+		<testng.version>7.9.0</testng.version>
 	</properties>
 
-	<!-- ✅ ALL DEPENDENCIES HERE -->
 	<dependencies>
-
-		<!-- Cucumber -->
-		<dependency>
-			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-java</artifactId>
-			<version>${cucumber.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-junit</artifactId>
-			<version>${cucumber.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- JUnit -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.13.2</version>
-			<scope>test</scope>
-		</dependency>
 
 		<!-- Selenium -->
 		<dependency>
@@ -59,42 +33,32 @@
 			<version>${webdrivermanager.version}</version>
 		</dependency>
 
-		<!-- Extent Reports -->
+		<!-- Cucumber -->
 		<dependency>
-			<groupId>com.aventstack</groupId>
-			<artifactId>extentreports</artifactId>
-			<version>${extentreports.version}</version>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>${cucumber.version}</version>
 		</dependency>
 
-		<!-- Extent Adapter -->
 		<dependency>
-			<groupId>tech.grasshopper</groupId>
-			<artifactId>extentreports-cucumber7-adapter</artifactId>
-			<version>${extent.adapter.version}</version>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-testng</artifactId>
+			<version>${cucumber.version}</version>
 		</dependency>
 
-		<!-- Logging -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-
-		<!-- TestNG (if your project uses it) -->
+		<!-- TestNG -->
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>7.9.0</version>
+			<version>${testng.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
 
-	<!-- ✅ BUILD PLUGINS ONLY -->
 	<build>
 		<plugins>
 
-			<!-- Compiler -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -104,7 +68,6 @@
 				</configuration>
 			</plugin>
 
-			<!-- Surefire -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
