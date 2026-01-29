@@ -9,7 +9,7 @@ public class HomeSteps extends BaseTest {
 
 	HomePage homePage;
 
-	@Given("check urlss")
+	@Given("check urlssp")
 	public void check_url() {
 		homePage = new HomePage(driver);
 		homePage.openHomePage();
